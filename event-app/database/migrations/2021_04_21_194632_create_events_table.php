@@ -22,6 +22,7 @@ class CreateEventsTable extends Migration
             $table->text("content");
             $table->decimal('gps_lat', 10, 8);
             $table->decimal('gps_lng', 11, 8);
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
         });
     }
 

@@ -18,6 +18,7 @@ class CreateCommentsTable extends Migration
             $table->timestamps();
             $table->string("nick_name");
             $table->text("content");
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
         });
     }
 

@@ -18,6 +18,7 @@ class CreateNewsTable extends Migration
             $table->timestamps();
             $table->string("title");
             $table->text("content");
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
         });
     }
 
