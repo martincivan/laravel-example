@@ -17,3 +17,10 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::get("events", "\App\Http\Controllers\EventController@index");
+Route::get("events/{id}", "\App\Http\Controllers\EventController@show");
+
+
+Route::get("news", "\App\Http\Controllers\NewsController@index");
+Route::get("news/{id}", "\App\Http\Controllers\NewsController@show");
