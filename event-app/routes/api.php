@@ -20,7 +20,11 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::get("events", "\App\Http\Controllers\EventController@index");
 Route::get("events/{id}", "\App\Http\Controllers\EventController@show");
+Route::delete("events/{id}", "\App\Http\Controllers\EventController@destroy");
 
 
 Route::get("news", "\App\Http\Controllers\NewsController@index");
 Route::get("news/{id}", "\App\Http\Controllers\NewsController@show");
+Route::middleware('auth:api')->post("news", "\App\Http\Controllers\NewsController@store");
+Route::middleware('auth:api')->put("news/{id}", "\App\Http\Controllers\NewsController@show");
+Route::middleware('auth:api')->delete("news/{id}", "\App\Http\Controllers\NewsController@destroy");

@@ -19,6 +19,8 @@ class CreateCommentsTable extends Migration
             $table->string("nick_name");
             $table->text("content");
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('news_id')->nullable();
+            $table->foreignId('events_id')->nullable();
         });
     }
 

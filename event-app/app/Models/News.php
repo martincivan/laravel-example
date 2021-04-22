@@ -8,4 +8,15 @@ use Illuminate\Database\Eloquent\Model;
 class News extends Model
 {
     use HasFactory;
+
+    protected $fillable = ['user_id', 'title', 'content'];
+
+    public function user() {
+        return $this->belongsTo('App\Models\User');
+    }
+
+    public function comments()
+    {
+        return $this->hasMany('App\Models\Comment');
+    }
 }
