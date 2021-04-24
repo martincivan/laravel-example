@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Comment;
 use App\Models\News;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -27,11 +28,11 @@ class NewsController extends Controller
      */
     public function store(Request $request)
     {
-        if (Auth::check()) {
-            $user = Auth::id();
-            echo "OK";
-        }
-
+        $news = new News();
+        $news->fill($request->all());
+        $news->user_id = Auth::id();
+        $news->save();
+        return response()->json($news, 200);
     }
 
     /**
@@ -54,7 +55,14 @@ class NewsController extends Controller
      */
     public function update(Request $request, News $news)
     {
-        //
+        if ($news->user_id != Auth::id()) {
+            return response()->json([
+                'error' => 'Insufficient permission'
+            ], 403);
+        }
+        $news->update($request->all());
+
+        return response()->json($news, 200);
     }
 
 
@@ -81,5 +89,15 @@ class NewsController extends Controller
         return response()->json([
             'message' => 'OK'
         ], 200);
+    }
+
+    public function comment(News $news, Request $request) {
+        $comment = new Comment();
+        $comment->content = $request->get("content");
+        $comment->user_id = Auth::id();
+        $comment->nick_name = Auth::user()->nick_name;
+        $comment->news_id = $news->id;
+        $comment->save();
+        return $comment;
     }
 }

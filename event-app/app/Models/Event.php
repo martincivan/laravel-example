@@ -9,7 +9,7 @@ class Event extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id', 'title', 'content', 'valid_to', 'valid_from', 'gps_lat', 'gps_lng'];
+    protected $fillable = ['title', 'content', 'valid_to', 'valid_from', 'gps_lat', 'gps_lng'];
 
 
     public function comments()
