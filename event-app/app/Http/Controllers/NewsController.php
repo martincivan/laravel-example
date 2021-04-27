@@ -7,6 +7,7 @@ use App\Models\News;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class NewsController extends Controller
 {
@@ -28,6 +29,13 @@ class NewsController extends Controller
      */
     public function store(Request $request)
     {
+        $validation = Validator::make($request->all(),[
+            'title' => 'required',
+            'content' => 'required',
+        ]);
+        if ($validation->fails()) {
+            return response()->json($validation->errors(), 400);
+        }
         $news = new News();
         $news->fill($request->all());
         $news->user_id = Auth::id();
@@ -59,6 +67,13 @@ class NewsController extends Controller
             return response()->json([
                 'error' => 'Insufficient permission'
             ], 403);
+        }
+        $validation = Validator::make($request->all(),[
+            'title' => 'required',
+            'content' => 'required',
+        ]);
+        if ($validation->fails()) {
+            return response()->json($validation->errors(), 400);
         }
         $news->update($request->all());
 
@@ -94,6 +109,11 @@ class NewsController extends Controller
     public function comment(News $news, Request $request) {
         $comment = new Comment();
         $comment->content = $request->get("content");
+        if ($comment->content == "") {
+            return response()->json([
+                'error' => 'content is required'
+            ], 400);
+        }
         $comment->user_id = Auth::id();
         $comment->nick_name = Auth::user()->nick_name ?? Auth::user()->name;
         $comment->news_id = $news->id;

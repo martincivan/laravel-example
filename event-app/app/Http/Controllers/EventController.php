@@ -6,6 +6,7 @@ use App\Models\Comment;
 use App\Models\Event;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class EventController extends Controller
 {
@@ -29,6 +30,17 @@ class EventController extends Controller
      */
     public function store(Request $request)
     {
+        $validation = Validator::make($request->all(),[
+            'title' => 'required',
+            'content' => 'required',
+            'valid_to' => 'required|date_format:Y-m-d H:i:s',
+            'valid_from' => 'required|date_format:Y-m-d H:i:s',
+            'gps_lat' => 'required|numeric',
+            'gps_lng' => 'required|numeric'
+        ]);
+        if ($validation->fails()) {
+            return response()->json($validation->errors(), 400);
+        }
         $event = new Event();
         $event->fill($request->all());
         $event->user_id = Auth::id();
@@ -60,6 +72,17 @@ class EventController extends Controller
             return response()->json([
                 'error' => 'Insufficient permission'
             ], 403);
+        }
+        $validation = Validator::make($request->all(),[
+            'title' => 'required',
+            'content' => 'required',
+            'valid_to' => 'required|date_format:Y-m-d H:i:s',
+            'valid_from' => 'required|date_format:Y-m-d H:i:s',
+            'gps_lat' => 'required|numeric',
+            'gps_lng' => 'required|numeric'
+        ]);
+        if ($validation->fails()) {
+            return response()->json($validation->errors(), 400);
         }
         $event->update($request->all());
 
