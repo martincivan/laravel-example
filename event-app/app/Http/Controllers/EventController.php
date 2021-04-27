@@ -101,7 +101,7 @@ class EventController extends Controller
         $comment = new Comment();
         $comment->content = $request->get("content");
         $comment->user_id = Auth::id();
-        $comment->nick_name = Auth::user()->nick_name;
+        $comment->nick_name = Auth::user()->nick_name ?? Auth::user()->name;
         $comment->event_id = $event->id;
         $comment->save();
         return $comment;

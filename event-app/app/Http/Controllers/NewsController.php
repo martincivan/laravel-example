@@ -95,7 +95,7 @@ class NewsController extends Controller
         $comment = new Comment();
         $comment->content = $request->get("content");
         $comment->user_id = Auth::id();
-        $comment->nick_name = Auth::user()->nick_name;
+        $comment->nick_name = Auth::user()->nick_name ?? Auth::user()->name;
         $comment->news_id = $news->id;
         $comment->save();
         return $comment;

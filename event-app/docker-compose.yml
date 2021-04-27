@@ -1,0 +1,31 @@
+version: '3'
+services:
+  mariadb:
+    container_name: mariadb-event-app
+    image: library/mariadb
+    environment:
+      - MYSQL_ROOT_PASSWORD=pass
+      - MYSQL_HOST=*
+      - MYSQL_DATABASE=event-app
+    ports:
+      - "3306:3306"
+  phpmyadmin:
+    container_name: phpmyadmin-event-app
+    image: phpmyadmin/phpmyadmin
+    ports:
+      - "8080:80"
+    depends_on:
+      - mariadb
+    environment:
+      - PMA_HOSTS=mariadb
+      - PMA_USER=root
+      - PMA_PASSWORD=pass
+  smtp4dev:
+    image: rnwood/smtp4dev:v3
+    ports:
+      - '5000:80'
+      - '25:25'
+      - '143:143'
+    environment:
+      - ServerOptions__HostName=smtp4dev
+      - ServerOptions__TlsMode=StartTls
